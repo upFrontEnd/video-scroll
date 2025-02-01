@@ -5,26 +5,25 @@ enterView({
     }
 })
 
-var frameNumber = 0, // start video at frame 0
-// lower numbers = faster playback
-playbackConst = 1000, 
-// get page height from video duration
-setHeight = document.getElementById("set-height"), 
-// select video element         
+let frameNumber = 0, 
+playbackConst = 1000, // Facteur d’ajustement pour synchroniser le scroll et la lecture de la vidéo.
+setHeight = document.getElementById("set-height"), // Hauteur du document
+ 
 vid = document.getElementById('v0'); 
-// var vid = $('#v0')[0]; // jquery option
 
-// dynamically set the page height according to video length
+/* 
+Dès le chargement des metadatas de la vidéo, on ajuste la hauteur de #set-height pour correspondre à la durée de la vidéo multipliée par playbackConst.
+Permet un effet de scroll fluide qui suit la longueur de la vidéo.
+*/
 vid.addEventListener('loadedmetadata', function() {
-setHeight.style.height = Math.floor(vid.duration) * playbackConst + "px";
+    setHeight.style.height = Math.floor(vid.duration) * playbackConst + "px";
 });
 
 
-// Use requestAnimationFrame for smooth playback
 function scrollPlay(){  
-var frameNumber  = window.pageYOffset/playbackConst;
-vid.currentTime  = frameNumber;
-window.requestAnimationFrame(scrollPlay);
+    var frameNumber  = window.pageYOffset / playbackConst;
+    vid.currentTime  = frameNumber;
+    window.requestAnimationFrame(scrollPlay);
 }
 
 window.requestAnimationFrame(scrollPlay);
